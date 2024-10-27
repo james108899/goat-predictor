@@ -12,7 +12,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 app = Flask(__name__)
 
 # Path to the saved model in H5 format
-model_path = "C:/Users/mrrda/OneDrive/Desktop/Goat_Classifier/goat_classifier_simple_cnn.h5"
+model_path = "Goat_Classifier/goat_classifier_simple_cnn.h5"
 model = load_model(model_path)
 
 # Directory to save uploaded images
