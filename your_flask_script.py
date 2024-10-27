@@ -16,7 +16,7 @@ model_path = "Goat_Classifier/goat_classifier_simple_cnn.h5"
 model = load_model(model_path)
 
 # Directory to save uploaded images
-upload_folder = "C:/Users/mrrda/OneDrive/Desktop/Goat_Classifier/uploads"
+upload_folder = "uploads"
 os.makedirs(upload_folder, exist_ok=True)
 
 # Test route to confirm the server is running
