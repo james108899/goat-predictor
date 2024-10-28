@@ -4,7 +4,6 @@ import time
 from flask import Flask, request, jsonify
 from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from PIL import Image
 import numpy as np
 
@@ -36,7 +35,9 @@ try:
             MaxPooling2D(2, 2),
             Conv2D(64, (3, 3), activation='relu'),
             MaxPooling2D(2, 2),
-            Flatten(),  # Ensure Flatten layer is here
+            Conv2D(128, (3, 3), activation='relu'),
+            MaxPooling2D(2, 2),
+            Flatten(),  # Flatten before Dense layers
             Dense(128, activation='relu'),
             Dense(1, activation='sigmoid')
         ])
