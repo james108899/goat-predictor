@@ -43,7 +43,10 @@ try:
         ])
         model.save(model_path)  # Save the newly defined model for future use
 
-    logging.info("Model Summary: %s", model.summary())
+    # Log the model summary to help identify issues with the architecture
+    model.summary(print_fn=logging.info)
+
+    logging.info("Model loaded or created successfully.")
 except Exception as e:
     logging.error(f"Error loading or creating model: {e}")
     model = None
