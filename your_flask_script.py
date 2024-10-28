@@ -51,7 +51,7 @@ except Exception as e:
 # Preprocess image function
 def preprocess_image(image_path):
     try:
-        # Load and convert image to RGB
+        # Load and convert image to RGB (forcing to 3 channels)
         image = Image.open(image_path).convert('RGB')
         
         # Resize the image to (224, 224) as expected by the model
