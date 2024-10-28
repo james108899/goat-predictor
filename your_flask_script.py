@@ -48,16 +48,27 @@ except Exception as e:
 # Preprocess image function
 def preprocess_image(image_path):
     try:
-        # Load and preprocess the image as per model requirements
+        # Load and convert image to RGB
         image = Image.open(image_path).convert('RGB')
+        
+        # Resize the image to (224, 224) as expected by the model
         image = image.resize((224, 224))
+        
+        # Convert the image to a numpy array and normalize
         image_array = np.array(image) / 255.0
-        image_array = np.expand_dims(image_array, axis=0)  # Add batch dimension
-        logging.info("Image preprocessed successfully.")
+        
+        # Ensure the image shape matches (224, 224, 3)
+        image_array = np.reshape(image_array, (224, 224, 3))
+        
+        # Expand dimensions to match (1, 224, 224, 3) for batch processing
+        image_array = np.expand_dims(image_array, axis=0)
+        
+        logging.info("Image preprocessed successfully with shape: %s", image_array.shape)
         return image_array
     except Exception as e:
         logging.error(f"Error in image preprocessing: {e}")
         raise
+
 
 # Test route to confirm the server is running
 @app.route('/test', methods=['GET'])
