@@ -14,7 +14,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 app = Flask(__name__)
 
 # Set up logging to capture all details for debugging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Define a directory to save uploaded images
 UPLOAD_FOLDER = 'uploads'
@@ -43,7 +43,7 @@ try:
         ])
         model.save(model_path)  # Save the newly defined model for future use
 
-    logging.info("Model loaded or created successfully.")
+    logging.info("Model Summary: %s", model.summary())
 except Exception as e:
     logging.error(f"Error loading or creating model: {e}")
     model = None
