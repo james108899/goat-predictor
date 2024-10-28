@@ -6,6 +6,9 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 import numpy as np
 
+# Suppress TensorFlow warnings for cleaner logs
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
 # Initialize Flask app
 app = Flask(__name__)
 
@@ -31,7 +34,7 @@ def preprocess_image(image_path):
         raise
 
 # Load the model (adjust path to your model file)
-model_path = "path/to/your/model.h5"  # Replace with your actual model path
+model_path = "goat_classifier_simple_cnn.h5"  # Model file name as per GitHub structure
 try:
     model = load_model(model_path)
     logging.info("Model loaded successfully.")

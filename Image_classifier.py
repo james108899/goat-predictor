@@ -5,7 +5,7 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropou
 
 # Paths to training data and model save location
 train_dir = "C:/Users/mrrda/OneDrive/Desktop/Goat_Classifier/Training_data"
-model_save_path = "C:/Users/mrrda/OneDrive/Desktop/Goat_Classifier/goat_classifier_simple_cnn"  # SavedModel format
+model_save_path = "C:/Users/mrrda/OneDrive/Desktop/Goat_Classifier/goat_classifier_simple_cnn.h5"  # H5 format
 
 # Image data generator with augmentation
 datagen = ImageDataGenerator(
@@ -60,6 +60,6 @@ history = model.fit(
 )
 print("Model training complete.")
 
-# Save the model in SavedModel format
-model.save(model_save_path, save_format="tf")
-print(f"Model saved successfully in SavedModel format at: {model_save_path}")
+# Save the model in H5 format
+model.save(model_save_path)
+print(f"Model saved successfully in H5 format at: {model_save_path}")
