@@ -2,7 +2,8 @@ import logging
 import os
 import time
 from flask import Flask, request, jsonify
-from tensorflow.keras.models import load_model
+from tensorflow.keras.models import Sequential, load_model
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from PIL import Image
 import numpy as np
@@ -20,29 +21,30 @@ logging.basicConfig(level=logging.INFO)
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# Path to the training data directory (if needed for data generators)
-train_data_path = os.path.join(os.getcwd(), "Training_data")
+# Model path
+model_path = "goat_classifier_simple_cnn.h5"
 
-# Initialize and create a train data generator if needed (optional)
+# Load or redefine model architecture if needed
 try:
-    datagen = ImageDataGenerator(rescale=1.0 / 255.0)
-    train_generator = datagen.flow_from_directory(
-        train_data_path,
-        target_size=(224, 224),
-        batch_size=32,
-        class_mode='binary'
-    )
-    logging.info("Training data generator created successfully.")
-except FileNotFoundError as e:
-    logging.error(f"Training data directory not found: {e}")
+    # Load model if it exists
+    if os.path.exists(model_path):
+        model = load_model(model_path)
+    else:
+        # Define a basic CNN model with Flatten layer before dense layers
+        model = Sequential([
+            Conv2D(32, (3, 3), activation='relu', input_shape=(224, 224, 3)),
+            MaxPooling2D(2, 2),
+            Conv2D(64, (3, 3), activation='relu'),
+            MaxPooling2D(2, 2),
+            Flatten(),  # Ensure Flatten layer is here
+            Dense(128, activation='relu'),
+            Dense(1, activation='sigmoid')
+        ])
+        model.save(model_path)  # Save the newly defined model for future use
 
-# Load the model with a relative path
-model_path = "goat_classifier_simple_cnn.h5"  # Model file name in the project root
-try:
-    model = load_model(model_path)
-    logging.info("Model loaded successfully.")
+    logging.info("Model loaded or created successfully.")
 except Exception as e:
-    logging.error(f"Error loading model: {e}")
+    logging.error(f"Error loading or creating model: {e}")
     model = None
 
 # Preprocess image function
@@ -68,7 +70,6 @@ def preprocess_image(image_path):
     except Exception as e:
         logging.error(f"Error in image preprocessing: {e}")
         raise
-
 
 # Test route to confirm the server is running
 @app.route('/test', methods=['GET'])
